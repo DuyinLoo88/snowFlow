@@ -1,0 +1,84 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>snowFlow</title>
+	<style>
+		body {
+			background: #eee;
+		}
+
+		.container {
+			position: absolute;
+		}
+
+		/* 使用@keyframes属性来定义动画 */
+
+		@keyframes mysnow {
+			0% {
+				bottom: 100%;
+				opacity: 0;
+			}
+			50% {
+				opacity: 1;
+				transform: rotate(720deg);
+			}
+			100% {
+				opacity: 0;
+				bottom: 0;
+			}
+		}
+
+		.pic {
+			position: absolute;
+			opacity: 0;
+			animation: mysnow 5s;
+			height: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="snowFlow"></div>
+
+
+	<!-- 模仿雪花下落的基本思想就是在一个页面中的随机位置生成一个嵌套有雪花图片的div 这个随机位置可以使用Math.random()*innerHeight/innerWidth来实现-->
+	<script>
+		window.onload = function () {
+			function snowFlow(height, left, src) {
+				// 定义雪花容器并给其设置类名
+				var container = document.createElement("div");
+				container.className = "container";
+				var pic = document.createElement("img");
+				pic.className = "pic";
+
+				// 然后将其加入到最外面的容器中
+				var snowFlow = document.getElementById("snowFlow");
+				snowFlow.appendChild(container);
+				container.appendChild(pic);
+
+				container.style.height = height + "px";
+				container.style.left = left + "px";
+				pic.src = src;
+
+				//设置一个定时器使得在一定时间之后消失
+				setTimeout(function () {
+					snowFlow.removeChild(container);
+				}, 8000)
+			}
+
+			// 设定一个定时器使得雪花能够持续下落
+			setInterval(function () {
+				var height = Math.random() * window.innerHeight;
+				var left = Math.random() * window.innerWidth;
+				var src = "./img/snow.png";
+				// 执行雪花下落函数
+				snowFlow(height, left, src);
+			}, 500)
+		}
+	</script>
+</body>
+
+</html>
